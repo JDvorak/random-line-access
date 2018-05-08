@@ -30,10 +30,9 @@ function randomLineAccess (path, opts) {
     var snippet = buffer.slice(0, 1000).toString()
     var key = snippet.split(opts.sep || /\s{1,}/)[0]
     var objKey = key
-    let isQuote = false
 
     if (opts.quotes && key[0].match(/^("|')/)) {
-      key = snippet.match(/^(("|').+("|'))/)[0]
+      key = snippet.match(/^(("|').+("|'))/)[0].trim()
       objKey = key.slice(1, key.length - 1)
     }
 
@@ -59,12 +58,25 @@ function randomLineAccess (path, opts) {
     if (!indices[key]) return res(new Error('Key does not exist.'))
     fr.read(indices[key].offset, indices[key].size, function (err, buffer) {
       var vectors = []
-      var line = opts.raw ? buffer : buffer.toString()
-      var keyLen = new Buffer(indices[key].key.trim() + (opts.sep || ' ')).length
-      line = line.slice(keyLen)
+      
+      var line = opts.raw 
+        ? buffer 
+        : buffer.toString()
+      
+      var keyLen = opts.raw 
+        ? new Buffer(indices[key].key.length).length 
+        : indices[key].key.length
+
+      if (opts.quotes || !opts.sep) {
+        line = line.slice(keyLen).trim()
+      }
+
       if (!opts.raw && opts.sep) {
-        // TODO: SUPPORT QUOTES
-        line = line.split(opts.sep).map((ea) => ea.trim()).filter((ea) => ea)
+        // TODO: SUPPORT NON-KEY LINE QUOTES
+        line = line.split(opts.sep)
+        line = !opts.quotes ? line.slice(1) : line
+        line = line.map((ea) => ea.trim()).filter((ea) => ea)
+        
       }
       res(null, line)
     })
