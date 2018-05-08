@@ -70,18 +70,22 @@ rla.close()
 
 #### Instance
 * `get(key, callback)`
+
   Takes a key and returns the value retrieved to the callback.
 
 * `set(key, buffer, callback)` **Careful: the set operator has write permission, and no undo**
+
   Takes a key, and either a buffer or a string. If the resulting buffer from the string or buffer is
 longer than the line in the document then this will raise an error. Dynamic reassignment of sizes
 
 * `ls(callback)`
+
   Returns all keys found in the document. Remember, keys are assumed to be the first string in the beginning of each line in the document.
 
 * `close(callback)`
+
   Closes the file.
-  
+
 ## Installation
 ```sh
 $ npm install random-line-access
