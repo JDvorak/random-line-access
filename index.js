@@ -46,7 +46,7 @@ function randomLineAccess (path, opts) {
   pump(source, dest, function () {
     ready = true
     for (var i = 0; i < queue.length; i++) {
-      let enqueued = queue.pop()
+      let enqueued = queue.reverse().pop()
       api[enqueued[0]](enqueued[2], enqueued[3], enqueued[4])
     }
   })
