@@ -11,13 +11,14 @@ well, then this is what you've been looking for.
 
 
 ## Usage
+huge.csv
 ```csv
 example1,1,2,3,4
 example2,hamburger,rango,,,martians
 somemore,ozone,zone,zoneout
 "wow complex",margarine,bananas,,,robot
 ```
-
+example.js
 ```js
 const randomLineAccess = require('random-line-access')
 
@@ -62,11 +63,17 @@ rla.close()
 ## API
 ### randomLineAccess
 * randomLineAccess(filePath, opts)
-  Filepath to any file. **Careful: the set operator has write permission**
+   **Careful: the set operator has write permission**
+
+
   Options include:
     - `omitEmpty` Expects a boolean, defaults to true. Removes empty values.
     - `quotes` Expects a boolean, defaults to false. Accepts quotes in the key value (IS IGNORED IN SEPARATED VALUES)
     - `sep` Expects a string. When provided, returns values seperated by the separator, and inserts arrays joined by seperator.
+
+  Returns an instance. 
+
+  But, if you are curious: what it does concretely is scan the provided file for line breaks, stores the offsets to each key, length of each line in a hash. On get, it uses these together to calculate and pluck the lines on request.
 
 #### Instance
 * `get(key, callback)`
@@ -76,7 +83,9 @@ rla.close()
 * `set(key, buffer, callback)` **Careful: the set operator has write permission, and no undo**
 
   Takes a key, and either a buffer or a string. If the resulting buffer from the string or buffer is
-longer than the line in the document then this will raise an error. Dynamic reassignment of sizes
+longer than the line in the document then this will raise an error. Dynamic reassignment of sizes is
+not supported because the author did not need it, nor did the author know an easy way to implement
+non-destructive insertion and efficient offset updates.
 
 * `ls(callback)`
 
