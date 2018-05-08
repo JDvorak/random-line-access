@@ -32,9 +32,9 @@ rla.get('example2', function(err, data) {
   console.log(data) // ['hamburger', 'rango', 'martians']
 })
 
-let rla = randomLineAccess('huge.csv', {sep: ',', omitEmpty: false})
+let rla = randomLineAccess('huge.csv', {sep: ','})
 rla.get('example2', function(err, data) {
-  console.log(data) // ['hamburger', 'rango', '', '', '', 'martians']
+  console.log(data) // ['hamburger', 'rango', 'martians']
 })
 
 

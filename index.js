@@ -45,7 +45,7 @@ function randomLineAccess (path, opts) {
 
   pump(source, dest, function () {
     ready = true
-    for (var i = 0; i < queue.length; i++) {
+    while (queue.length > 0) {
       let enqueued = queue.reverse().pop()
       api[enqueued[0]](enqueued[2], enqueued[3], enqueued[4])
     }
@@ -64,10 +64,7 @@ function randomLineAccess (path, opts) {
       line = line.slice(keyLen)
       if (!opts.raw && opts.sep) {
         // TODO: SUPPORT QUOTES
-        line = line.split(opts.sep).map((ea) => ea.trim())
-        if (opts.omitEmpty) {
-          line = line.filter((ea) => ea)
-        }
+        line = line.split(opts.sep).map((ea) => ea.trim()).filter((ea) => ea)
       }
       res(null, line)
     })

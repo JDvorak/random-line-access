@@ -1,6 +1,6 @@
 {
   "name": "random-line-access",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Random access line",
   "main": "index.js",
   "scripts": {

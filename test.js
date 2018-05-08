@@ -61,15 +61,15 @@ test('should retrieve lines from csv sets as well', function (t) {
     third,mango,pinata,long,string,,another
     "bafloon mango",george,chai,,,
   `))
-  let rl = rla('test.txt', {sep: ',', quotes: true, omitEmpty: false})
+  let rl = rla('test.txt', {sep: ',', quotes: true})
   rl.get('example', function (err, str) {
     t.deepEqual(str, ['2', '3', '4', '5', '6'])
     rl.get('another', function (err, str) {
       t.deepEqual(str, ['1', '2', '3', '4', 'cat'], 'failed to retrieve string with text')
       rl.get('third', function (err, str) {
-        t.deepEqual(str, ['mango', 'pinata', 'long', 'string', '', 'another'])
+        t.deepEqual(str, ['mango', 'pinata', 'long', 'string','another'])
         rl.get('bafloon mango', function (err, str) {
-          t.deepEqual(str, ['george', 'chai', '', '', ''])
+          t.deepEqual(str, ['george', 'chai'])
           rl.ls(function (err, keys) {
             t.deepEqual(keys, ['example', 'another', 'third', 'bafloon mango'])
             var newValue = ['hippy', 'hooperango']
