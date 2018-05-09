@@ -9,6 +9,12 @@ from at random, and your file happens to be structured such that the
 first word of each line can be regarded as a key for the entire line,
 well, then this is what you've been looking for.
 
+PROTIP: If your use case has key requests which follow a Zipfian 
+distribution with a relatively stable focal set, then put an RLU Cache 
+in front of this library to improve performance even further! Or, 
+if you can fit it into memory (you just didn't want to), then a cache
+will provide lazy loading functionality.
+
 
 ## Usage
 huge.csv
@@ -45,15 +51,18 @@ rla.get('example1', function(err, data) {
 
 let rla = randomLineAccess('huge.csv', {sep: ',', quotes: true})
 rla.ls(function(err, ls) {
-  console.log(ls) // ['example1', 'example2', 'somemore', 'wow complex']
+  console.log(ls) // ['example1', 'example2', 'somemore']
 })
 
 rla.get('wow complex', function(err, data) {
   console.log(data) // ['margarine', 'bananas', 'robot']
 })
 
-rla.set('wow complex', ['molasses'], function(err, data) {
-  console.log(data) // ['molasses']
+rla.set('wow complex', ['molasses'], function(err, ok) {
+  console.log(ok) // true
+  rla.get('wow complex', function(err, data) {
+    console.log(data) // ['molasses']
+  })
 })
 
 rla.close()
